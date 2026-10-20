@@ -1,0 +1,84 @@
+Assignment 2 – Retail Analytics SQL Project Project Assumptions
+
+1.  Revenue calculations
+
+-   Gross line-item value is calculated as quantity multiplied by
+    unit_price_at_sale.
+-   Net line-item revenue is calculated as quantity multiplied by
+    unit_price_at_sale multiplied by (1 - discount_rate).
+-   Revenue calculations include only orders where order_status is
+    ‘Delivered’, unless a question specifically asks about other order
+    statuses.
+-   Returned and cancelled orders are not included in delivered revenue.
+
+2.  Order and customer counts
+
+-   Each order is counted once when calculating the number of orders,
+    even if the order contains multiple items.
+-   Customers with no delivered orders are included in questions that
+    explicitly ask for all customers or zero activity.
+-   For the average customer net revenue in Q14, the average is
+    calculated only across customers with delivered purchases, because
+    the CTE includes customers with delivered orders.
+
+3.  Product sales and ranking
+
+-   Product sales revenue is calculated using the sale-time price
+    (unit_price_at_sale), rather than the product’s current unit_price.
+-   Discounts are applied using the discount_rate stored in order_items.
+-   Products with no delivered sales should still appear in the product
+    ranking query with net revenue shown as zero.
+-   Product ranking is performed separately within each product
+    category, with higher net revenue receiving a higher position.
+
+4.  Stock classification
+
+-   Products with stock_quantity below 20 are labelled ‘Low Stock’.
+-   Products with stock_quantity from 20 through 40, inclusive, are
+    labelled ‘Moderate Stock’.
+-   Products with stock_quantity above 40 are labelled ‘High Stock’.
+
+5.  Date handling
+
+-   Q1 includes delivered orders from 1 October 2024 through 31 March
+    2025, inclusive.
+-   Monthly reporting groups orders by calendar year and month.
+-   Monthly results are sorted chronologically, and running totals
+    accumulate revenue in that order.
+
+6.  Returned orders
+
+-   Return analysis uses records in the Returns table to identify
+    returned orders.
+-   The returned order value is calculated before discounts, using
+    quantity multiplied by unit_price_at_sale for each order item.
+
+7.  Joins and missing records
+
+-   INNER JOIN is used where the question requires matching records
+    across the relevant tables.
+-   LEFT JOIN is used where all records from the main table must be
+    retained, including employees or customers with no matching orders.
+-   NOT EXISTS is used to identify customers who have no delivered
+    orders.
+
+8.  Revenue contribution
+
+-   The top-three-customer query ranks customers by net spend from
+    delivered orders.
+-   Each customer’s revenue percentage is calculated against total
+    delivered net revenue across all customers with delivered purchases,
+    not just the top three.
+
+9.  Data and schema
+
+-   The project uses the supplied dataset and the existing Customers,
+    Products, Employees, Orders, Order_Items, and Returns tables.
+-   Table and column names in the queries are based on the schema used
+    in the PostgreSQL database.
+-   No changes to the supplied data are assumed as part of the analysis.
+
+Note: These assumptions describe how the assignment queries interpret
+the supplied business rules and calculations. If the actual dataset or
+database schema differs, the queries and assumptions should be reviewed
+accordingly.
